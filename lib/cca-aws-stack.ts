@@ -8,7 +8,6 @@ import * as codebuild from '@aws-cdk/aws-codebuild';
 import {SecretValue} from "@aws-cdk/core";
 import * as iam from '@aws-cdk/aws-iam';
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as notifications from '@aws-cdk/aws-codestarnotifications';
 import * as sns from '@aws-cdk/aws-sns';
 import * as subscriptions from '@aws-cdk/aws-sns-subscriptions';
 import { getLambdaCode } from '../src/Helpers'
@@ -51,6 +50,7 @@ export class CcaAwsStack extends cdk.Stack {
         // create new codepipeline
         const pipeline = new codepipeline.Pipeline(this, 'CDK-test-pipeline');
 
+        // create new sns topic and configure notification on pipeline state change
         const topic = new sns.Topic(this, 'codepipeline-status-topic');
         const topicEventTarget = new event_targets.SnsTopic(topic);
         topic.addSubscription(new subscriptions.EmailSubscription('oshan.fernando123@gmail.com'))
